@@ -1,0 +1,26 @@
+{% extends 'jobs/base.html' %}
+
+{% block title %}
+  Login
+{% endblock %}
+
+{% block body %}
+  <h1>Entrar</h1>
+  <form action="{{request.path}}" method="post">
+    {% csrf_token %}
+    <div class="form-group">
+      <label for="username">Endereço de e-mail</label>
+      <input type="email" class="form-control" name="username" required>
+    </div>
+
+    <div class="form-group">
+      <label for="password">Senha</label>
+      <input type="password" class="form-control" name="password" required>
+    </div>
+
+    {% if error_message %}
+      <p><strong>{{ error_message }}</strong></p>
+    {% endif %}
+    <button type="submit" class="btn btn-primary">entrar</button>
+  </form>
+{% endblock %}

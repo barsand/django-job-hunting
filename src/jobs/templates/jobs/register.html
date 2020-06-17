@@ -1,0 +1,66 @@
+{% extends 'jobs/base.html' %}
+
+{% block title %}
+Cadastro
+{% endblock %}
+
+{% block body %}
+  <h1>Cadastro de usuário</h1>
+
+  {% if message %}
+  <span>
+  <div class="alert alert-{{message.type}} alert-dismissible fade show" role="alert">
+    {{message.text}}
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  </span>
+  {% endif %}
+
+  <a class="btn btn-primary my-4" href="{% url 'login' %}" role="button">
+    Página de login
+  </a>
+
+  <form action="{{request.path}}" method="post">
+    {% csrf_token %}
+    <div class="form-group">
+      <label for="full_name">Nome completo</label>
+      <input type="text" class="form-control" name="full_name" required>
+    </div>
+
+    <div class="form-group">
+      <label for="username">Endereço de e-mail</label>
+      <input type="email" class="form-control" name="username" required>
+    </div>
+
+    {% for field, field_slug, model_choices in choices %}
+    <fieldset class="form-group">
+      <div class="row">
+        <legend class="col-form-label col-sm-2 pt-0">{{field_slug}}</legend>
+        <div class="col-sm-10">
+          {% for c, c_slug in model_choices %}
+          <div class="form-check mb-2">
+            <input class="form-check-input" type="radio" name="{{field}}"
+            value="{{c}}" required>
+            <label class="form-check-label" for="gridRadios1">
+              {{c_slug}}
+            </label>
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+    </fieldset>
+    {% endfor %}
+
+    <div class="form-group">
+      <label for="password">Senha</label>
+      <input type="password" class="form-control" name="password" required>
+    </div>
+
+    {% if error_message %}
+      <p><strong>{{ error_message }}</strong></p>
+    {% endif %}
+    <button type="submit" class="btn btn-primary">salvar</button>
+  </form>
+{% endblock %}

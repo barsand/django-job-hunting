@@ -1,4 +1,8 @@
 from django.db import models
+from django.dispatch import receiver
+from django.contrib.auth.models import User
+from django.db.models.signals import post_save
+
 
 EDUCATION_CHOICES = [
     ('EF', 'Ensino fundamental'),
@@ -16,9 +20,20 @@ SALARY_CHOICES = [
     ('3+', 'Acima de 3.000')
 ]
 
+ROLE_CHOICES = [
+    ('company', 'Empresa'),
+    ('candidate', 'Candidato'),
+]
+
+
+class Profile(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    full_name = models.TextField(max_length=300)
+    role = models.TextField(max_length=10, choices=ROLE_CHOICES)
+
+
 class JobPosition(models.Model):
     title = models.CharField(max_length=100)
     salary = models.CharField(max_length=16, choices=SALARY_CHOICES)
     requirements = models.CharField(max_length=1000)
     min_education = models.CharField(max_length=20, choices=EDUCATION_CHOICES)
-
