@@ -1,0 +1,37 @@
+<form action="{{request.path}}" method="post">
+  {% csrf_token %}
+  <div class="form-group">
+    <label for="title">Nome da vaga</label>
+    <input type="text" class="form-control" name="title" required>
+  </div>
+
+
+  {% for field, field_slug, model_choices in choices %}
+  <fieldset class="form-group">
+    <div class="row">
+      <legend class="col-form-label col-sm-3 pt-0">{{field_slug}}</legend>
+      <div class="col-sm-9">
+        {% for c, c_slug in model_choices %}
+        <div class="form-check mb-2">
+          <input class="form-check-input" type="radio" name="{{field}}"
+          id="gridRadios1" value="{{c}}">
+          <label class="form-check-label" for="gridRadios1">
+            {{c_slug}}
+          </label>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+  </fieldset>
+  {% endfor %}
+
+  <div class="form-group">
+    <label for="requirements">Requisitos</label>
+    <textarea class="form-control" name="requirements" id="requirements" rows="4" maxlength="50" required></textarea>
+  </div>
+
+  {% if error_message %}
+    <p><strong>{{ error_message }}</strong></p>
+  {% endif %}
+  <button type="submit" class="btn btn-primary">Submit</button>
+</form>
