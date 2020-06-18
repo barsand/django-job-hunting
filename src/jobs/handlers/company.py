@@ -1,14 +1,11 @@
 from django.shortcuts import render
 from . import auth
+from .position import get_profile_positions
 from .. import models, utils
 import collections
 
 def get_all_positions():
     return {'positions': models.JobPosition.objects.all()}
-
-def get_profile_positions(request):
-    curr_profile = auth.AuthHandler.get_curr_profile(request)
-    return {'positions': models.JobPosition.objects.filter(publisher=curr_profile)}
 
 def get_company_applications(request):
     return models.Application.objects.filter(

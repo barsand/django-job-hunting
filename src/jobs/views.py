@@ -33,7 +33,7 @@ def home(request):
 
 def position_create(request):
     if handlers.AuthHandler.access_granted(request, 'company'):
-        return handlers.PositionHandler.create(request)
+        return handlers.PositionHandler.position_create(request)
     else:
         return render(request, 'jobs/403.html')
 
@@ -48,6 +48,27 @@ def position_view(request, position_id):
 def position_apply(request, position_id):
     if handlers.AuthHandler.access_granted(request, 'candidate'):
         return handlers.CandidateHandler.position_apply(request, position_id)
+
+    else:
+        return render(request, 'jobs/403.html')
+
+def position_edit(request, position_id):
+    if handlers.AuthHandler.access_granted(request, 'company'):
+        return handlers.PositionHandler.position_edit(request, position_id)
+
+    else:
+        return render(request, 'jobs/403.html')
+
+def position_confirm_delete(request, position_id):
+    if handlers.AuthHandler.access_granted(request, 'company'):
+        return handlers.PositionHandler.position_confirm_delete(request, position_id)
+
+    else:
+        return render(request, 'jobs/403.html')
+
+def position_delete(request, position_id):
+    if handlers.AuthHandler.access_granted(request, 'company'):
+        return handlers.PositionHandler.position_delete(request, position_id)
 
     else:
         return render(request, 'jobs/403.html')

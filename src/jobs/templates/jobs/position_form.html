@@ -1,17 +1,28 @@
+{% load custom_filters %}
+{% if message %}
+<div class="alert alert-{{message.type}}" role="alert">
+  {{message.text}}
+</div>
+{% else %}
+
 <form action="{{request.path}}" method="post">
   {% csrf_token %}
   <div class="form-group">
-    <label for="title">Nome da vaga</label>
-    <input type="text" class="form-control" name="title" required>
+    <h4><label for="title">Nome da vaga</label></h4>
+
+    <input type="text" class="form-control" name="title" required
+    value="{{position.title}}">
   </div>
 
 
   {% for field, field_slug, model_choices in choices %}
   <div class="form-group">
-    <label for="title">{{field_slug}}</label>
+    <h4><label for="title">{{field_slug}}</label></h4>
     {% for c, c_slug in model_choices %}
     <div class="form-check">
-      <input class="form-check-input" type="radio" name="{{field}}" value="{{c}}" required>
+      <input class="form-check-input" type="radio" name="{{field}}" value="{{c}}" required
+             {% if c == position|dict_key:field %}checked{% endif %}
+      >
       <label class="form-check-label">{{c_slug}}</label>
     </div>
     {% endfor %}
@@ -19,12 +30,15 @@
   {% endfor %}
 
   <div class="form-group">
-    <label for="requirements">Requisitos</label>
-    <textarea class="form-control" name="requirements" rows="4" maxlength="1000" required></textarea>
+    <h4><label for="requirements">Requisitos</label></h4>
+    <textarea class="form-control" name="requirements" rows="4" maxlength="1000" required
+    >{{position.requirements}}
+    </textarea>
   </div>
 
   {% if error_message %}
     <p><strong>{{ error_message }}</strong></p>
   {% endif %}
-  <button type="submit" class="btn btn-primary">Submit</button>
+  <button type="submit" class="btn btn-primary">Enviar</button>
 </form>
+{% endif %}

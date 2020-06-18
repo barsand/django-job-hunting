@@ -38,6 +38,7 @@ class JobPosition(models.Model):
     requirements = models.CharField(max_length=1000)
     min_education = models.CharField(max_length=20, choices=EDUCATION_CHOICES)
     publisher = models.ForeignKey(Profile, on_delete=models.CASCADE)
+    created = models.DateTimeField(auto_now_add=True)
 
 class Application(models.Model):
     position = models.ForeignKey(JobPosition, on_delete=models.CASCADE)
@@ -45,3 +46,4 @@ class Application(models.Model):
     salary_claim = models.IntegerField()
     professional_experience = models.CharField(max_length=1000)
     education = models.CharField(max_length=20, choices=EDUCATION_CHOICES)
+    created = models.DateTimeField(auto_now_add=True)

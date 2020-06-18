@@ -9,7 +9,8 @@ class AuthHandler():
             context = {
                 'choices': [
                     ('role', 'Tipo de perfil', models.ROLE_CHOICES)
-                ]
+                ],
+                'show_form': True
             }
             return render(request, 'jobs/register.html', context)
         elif request.method == 'POST':

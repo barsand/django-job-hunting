@@ -22,6 +22,7 @@ Cadastro
     Página de login
   </a>
 
+  {% if show_form %}
   <form action="{{request.path}}" method="post">
     {% csrf_token %}
     <div class="form-group">
@@ -63,4 +64,5 @@ Cadastro
     {% endif %}
     <button type="submit" class="btn btn-primary">salvar</button>
   </form>
+  {% endif %}
 {% endblock %}

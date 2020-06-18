@@ -1,12 +1,15 @@
 {% extends 'jobs/base.html' %}
 
 {% block title %}
-  Criar vaga
+  Editar vaga
 {% endblock %}
 
 {% block body %}
-  <h1>Criar vaga de emprego</h1>
-  {% include 'jobs/position_form.html' %}
+{% if message %}
+<div class="alert alert-{{message.type}}" role="alert">
+  {{message.text}}
+</div>
+{% endif %}
 
 <a class="btn btn-primary my-4" href="{% url 'home' %}" role="button">
 Retornar às vagas

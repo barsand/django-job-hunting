@@ -28,8 +28,10 @@
       <th>Nome da vaga</th>
       <th>Faixa salarial</th>
       <th>Escolaridade mínima</th>
+      <th>Submissões</th>
       <th>Visualizar vaga</th>
-      <th>Candidatos</th>
+      <th>Editar</th>
+      <th>Deletar</th>
     </tr>
   </thead>
   <tbody>
@@ -38,12 +40,22 @@
         <td>{{ p.title }}</td>
         <td>{{ p.get_salary_display }}</td>
         <td>{{ p.get_min_education_display }} {{ i.unit }}</td>
-        <td class="d-flex justify-content-center">
+        <td>{{ num_applications }}</td>
+        <td class="text-center">
             <a href="{% url 'position_view' position_id=p.id %}">
                 <i class="fa fa-eye ml-1"></i>
             </a>
         </td>
-        <td>{{ num_applications }}</td>
+        <td class="text-center">
+            <a href="{% url 'position_edit' position_id=p.id %}">
+                <i class="fa fa-edit ml-1"></i>
+            </a>
+        </td>
+        <td class="text-center">
+            <a href="{% url 'position_confirm_delete' position_id=p.id %}">
+                <i class="fa fa-trash text-danger ml-1"></i>
+            </a>
+        </td>
       </tr>
     {% endfor %}
   </tbody>
