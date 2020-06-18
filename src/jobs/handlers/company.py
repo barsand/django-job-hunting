@@ -1,4 +1,5 @@
 from django.shortcuts import render
+from . import auth
 from .. import models, utils
 
 def get_positions_listing_context():
@@ -23,6 +24,7 @@ class PositionHandler():
             return render(request, 'jobs/position_create.html', context)
         elif request.method == 'POST':
             form_data = utils.parse_model_form_data(request, models.JobPosition)
+            form_data['publisher'] = auth.AuthHandler.get_curr_profile(request)
             db_job_position = models.JobPosition(**form_data)
             db_job_position.save()
             context = get_positions_listing_context()

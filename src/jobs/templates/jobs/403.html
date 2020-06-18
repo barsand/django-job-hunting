@@ -1,0 +1,15 @@
+{% extends 'jobs/base.html' %}
+
+{% block title %}
+  Acesso negado
+{% endblock %}
+
+{% block body %}
+  <h1>Acesso negado</h1>
+  <a class="btn btn-primary my-4" href="{% url 'login' %}" role="button">
+    Fazer login
+  </a>
+  <a class="btn btn-primary my-4" href="{% url 'home' %}" role="button">
+    Página inicial
+  </a>
+{% endblock %}

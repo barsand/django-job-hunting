@@ -1,3 +1,4 @@
+from django.shortcuts import render
 from django.http import HttpResponse
 from . import models, utils, handlers
 
@@ -14,9 +15,16 @@ def login(request):
     return handlers.AuthHandler.login(request)
 
 
-def company_dash(request):
-    return handlers.CompanyHandler.dash(request)
+def home(request):
+    if handlers.AuthHandler.access_granted(request, ['company', 'candidate']):
+        if handlers.AuthHandler.get_curr_profile(request).role == 'company':
+            return handlers.CompanyHandler.dash(request)
+    else:
+        return render(request, 'jobs/403.html')
 
 
 def position_create(request):
-    return handlers.PositionHandler.create(request)
+    if handlers.AuthHandler.access_granted(request, 'company'):
+        return handlers.PositionHandler.create(request)
+    else:
+        return render(request, 'jobs/403.html')

@@ -1,6 +1,7 @@
 from .. import models, utils
 from django.shortcuts import render, redirect
-from django.contrib.auth import authenticate
+from django.contrib.auth import authenticate, login
+
 
 class AuthHandler():
     def register_user(request):
@@ -35,9 +36,29 @@ class AuthHandler():
         elif request.method == 'POST':
             form_data = utils.parse_model_form_data(request, models.User)
             user = authenticate(**form_data)
+            login(request, user)
+
             curr_profile = models.Profile.objects.get(user=user)
 
-            if curr_profile.role in ['company', 'candidate']:
-                return redirect('/%s/' % curr_profile.role)
+            return redirect('/home/')
 
-            import ipdb; ipdb.set_trace()
+    def get_curr_profile(request):
+        try:
+            return models.Profile.objects.get(user=request.user)
+        except:
+            return None
+
+
+    def access_granted(request, allowed_roles):
+        if isinstance(allowed_roles, str):
+            allowed_roles = [allowed_roles]
+        try:
+            assert request.user.is_authenticated
+            profile = models.Profile.objects.get(user=request.user)
+            assert profile is not None
+            assert profile.role in allowed_roles
+            return True
+        except AssertionError as exp:
+            return False
+
+
