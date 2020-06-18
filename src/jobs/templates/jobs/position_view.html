@@ -29,8 +29,88 @@
 </a>
 
 {% elif profile.role == 'company' %}
-<h3>Candidatos</h3>
+<h3>Submissões</h3>
+<table id="table" class="display">
+  <thead>
+    <tr>
+      <th>Nome do candidato</th>
+      <th>Pretensão salarial</th>
+      <th>Escolaridade</th>
+      <th>Experiência profissional</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for a in applications %}
+      <tr>
+          <td>{{a.candidate.full_name}}</td>
+          <td>{{a.salary_claim}}</td>
+          <td>{{a.get_education_display}}</td>
+          <td>{{a.professional_experience}}</td>
+          <td class="d-flex justify-content-center">
+              <a href="{% url 'application_view' application_id=a.id %}">
+                  <i class="fa fa-eye ml-1"></i>
+              </a>
+          </td>
+      </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+
+{% for a in applications %}
+{{a}}
+{% endfor %}
 
 {% endif %}
 
+{% endblock %}
+
+{% block scripts %}
+<script>
+  $(document).ready( function () {
+    $('#table').DataTable({
+      'language': {
+        "sEmptyTable": "Nenhum registro encontrado",
+        "sInfo": "Mostrando de _START_ até _END_ de _TOTAL_ registros",
+        "sInfoEmpty": "Mostrando 0 até 0 de 0 registros",
+        "sInfoFiltered": "(Filtrados de _MAX_ registros)",
+        "sInfoPostFix": "",
+        "sInfoThousands": ".",
+        "sLengthMenu": "_MENU_ resultados por página",
+        "sLoadingRecords": "Carregando...",
+        "sProcessing": "Processando...",
+        "sZeroRecords": "Nenhum registro encontrado",
+        "sSearch": "Pesquisar",
+        "oPaginate": {
+          "sNext": "Próximo",
+          "sPrevious": "Anterior",
+          "sFirst": "Primeiro",
+          "sLast": "Último"
+        },
+        "oAria": {
+          "sSortAscending": ": Ordenar colunas de forma ascendente",
+          "sSortDescending": ": Ordenar colunas de forma descendente"
+        },
+        "select": {
+          "rows": {
+            "_": "Selecionado %d linhas",
+            "0": "Nenhuma linha selecionada",
+            "1": "Selecionado 1 linha"
+          }
+        },
+        "buttons": {
+          "copy": "Copiar para a área de transferência",
+          "copyTitle": "Cópia bem sucedida",
+          "copySuccess": {
+            "1": "Uma linha copiada com sucesso",
+            "_": "%d linhas copiadas com sucesso"
+          }
+        }
+      }
+
+
+    });
+  } );
+</script>
 {% endblock %}

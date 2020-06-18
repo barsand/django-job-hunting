@@ -12,6 +12,14 @@
   </head>
   <body>
     <div class="container">
+      {% if request.user.is_authenticated %}
+      <p class="text-right mt-3">
+      <i class="fa fa-user mr-2"></i>
+      {{request.user.username}}
+      (<a href="{% url 'logout' %}">sair</a>)
+      </p>
+      {% endif %}
+
       {% block body %} {% endblock %}
     </div>
 

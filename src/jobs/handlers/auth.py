@@ -1,6 +1,6 @@
 from .. import models, utils
 from django.shortcuts import render, redirect
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login, logout
 
 
 class AuthHandler():
@@ -41,6 +41,10 @@ class AuthHandler():
             curr_profile = models.Profile.objects.get(user=user)
 
             return redirect('/home/')
+
+    def logout(request):
+        logout(request)
+        return redirect('/login/')
 
     def get_curr_profile(request):
         try:

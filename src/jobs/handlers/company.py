@@ -10,9 +10,9 @@ def get_profile_positions(request):
     curr_profile = auth.AuthHandler.get_curr_profile(request)
     return {'positions': models.JobPosition.objects.filter(publisher=curr_profile)}
 
-
 def get_company_applications(request):
-    return models.Application.objects.filter(position__publisher__exact=auth.AuthHandler.get_curr_profile(request))
+    return models.Application.objects.filter(
+            position__publisher__exact=auth.AuthHandler.get_curr_profile(request))
 
 
 class CompanyHandler():

@@ -15,6 +15,10 @@ def login(request):
     return handlers.AuthHandler.login(request)
 
 
+def logout(request):
+    return handlers.AuthHandler.logout(request)
+
+
 def home(request):
     if handlers.AuthHandler.access_granted(request, ['company', 'candidate']):
         role = handlers.AuthHandler.get_curr_profile(request).role
@@ -47,3 +51,12 @@ def position_apply(request, position_id):
 
     else:
         return render(request, 'jobs/403.html')
+
+def application_view(request, application_id):
+    if handlers.AuthHandler.access_granted(request, ['company', 'candidate']):
+        return handlers.ApplicationHandler.application_view(request, application_id)
+
+    else:
+        return render(request, 'jobs/403.html')
+
+

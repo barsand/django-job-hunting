@@ -3,6 +3,11 @@ from . import auth
 from .. import models, utils
 import collections
 
+
+def get_position_applications(position):
+    return models.Application.objects.filter(position=position)
+
+
 class PositionHandler():
     def create(request):
         if request.method == 'GET':
@@ -29,8 +34,12 @@ class PositionHandler():
 
     def position_view(request, position_id):
         if request.method == 'GET':
+            curr_profile = auth.AuthHandler.get_curr_profile(request)
+            curr_position = models.JobPosition.objects.get(id=position_id)
             context = {
-                'profile': auth.AuthHandler.get_curr_profile(request),
-                'position': models.JobPosition.objects.get(id=position_id)
+                'profile': curr_profile,
+                'position': curr_position
             }
+            if curr_profile.role == 'company':
+                context['applications'] = get_position_applications(curr_position)
             return render(request, 'jobs/position_view.html', context)

@@ -1,0 +1,55 @@
+{% extends 'jobs/base.html' %}
+
+{% block title %}
+  Visualizar candidatura
+{% endblock %}
+
+{% block body %}
+<h1>Candidatura à vaga "{{application.position.title}}"</h1>
+
+<h3>Dados da vaga</h3>
+<span class="row">
+    <strong class="mr-1">Escolaridade mínima:</strong>
+    <p>{{application.position.get_min_education_display}}</p>
+</span>
+<span class="row">
+    <strong class="mr-1">Faixa salarial:</strong>
+    <p>{{application.position.get_salary_display}}</p>
+</span>
+<span class="row">
+    <strong class="mr-1">Requisitos:</strong>
+    <p>{{application.position.requirements}}</p>
+</span>
+
+<h3>Dados da submissão</h3>
+<span class="row">
+    <strong class="mr-1">Nome:</strong>
+    <p>{{application.candidate.full_name}}</p>
+</span>
+
+<span class="row">
+    <strong class="mr-1">E-mail:</strong>
+    <p>{{application.candidate.user.username}}</p>
+</span>
+
+<span class="row">
+    <strong class="mr-1">Última educação:</strong>
+    <p>{{application.get_education_display}}</p>
+</span>
+
+<span class="row">
+    <strong class="mr-1">Experiência profissional:</strong>
+    <p>{{application.professional_experience}}</p>
+</span>
+
+<span class="row">
+    <strong class="mr-1">Pretensão salarial:</strong>
+    <p>{{application.salary_claim}}</p>
+</span>
+
+<a class="btn btn-primary my-4"
+   href="{% url 'position_view' position_id=application.position.id %}"
+   role="button">
+Retornar à vaga
+</a>
+{% endblock %}
