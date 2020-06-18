@@ -20,6 +20,7 @@
   <thead>
     <tr>
       <th>Nome da vaga</th>
+      <th>Empresa</th>
       <th>Faixa salarial</th>
       <th>Escolaridade mínima</th>
       <th>Visualizar vaga</th>
@@ -30,6 +31,7 @@
     {% for p in positions %}
       <tr>
         <td>{{ p.title }}</td>
+        <td>{{ p.publisher.full_name }}</td>
         <td>{{ p.get_salary_display }}</td>
         <td>{{ p.get_min_education_display }} {{ i.unit }}</td>
         <td class="d-flex justify-content-center">

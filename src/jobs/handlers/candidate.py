@@ -1,3 +1,4 @@
+from django.db.models import Q
 from django.shortcuts import render
 from . import auth
 from .. import models, utils
@@ -29,6 +30,21 @@ class CandidateHandler():
             return render(request, 'jobs/position_view.html', context)
 
     def position_apply(request, position_id):
+        def handle_duplicate():
+            context = {
+                'message': {
+                    'type': 'warning',
+                    'text': 'Você já se candidatou a esta vaga!'
+                }
+            }
+            return render(request, 'jobs/position_apply.html', context)
+        curr_profile = auth.AuthHandler.get_curr_profile(request)
+        curr_position = models.JobPosition.objects.get(id=position_id)
+        res = models.Application.objects.filter(
+                Q(position=curr_position) & Q(candidate=curr_profile))
+        if len(res):
+            return handle_duplicate()
+
         if request.method == 'GET':
             context = {
                 'profile': auth.AuthHandler.get_curr_profile(request),
@@ -39,15 +55,18 @@ class CandidateHandler():
             }
             return render(request, 'jobs/position_apply.html', context)
         elif request.method == 'POST':
-            form_data = utils.parse_model_form_data(request, models.Application)
-            form_data['candidate'] = auth.AuthHandler.get_curr_profile(request)
-            form_data['position'] = models.JobPosition.objects.get(id=position_id)
-            application = models.Application(**form_data)
-            application.save()
-            context = {
-                'message': {
-                    'type': 'success',
-                    'text': 'Candidatura à vaga "%s" submetida com sucesso!' % form_data['position'].title
+            if not len(res):
+                form_data = utils.parse_model_form_data(request, models.Application)
+                form_data['candidate'] = curr_profile
+                form_data['position'] = curr_position
+                application = models.Application(**form_data)
+                application.save()
+                context = {
+                    'message': {
+                        'type': 'success',
+                        'text': 'Candidatura à vaga "%s" submetida com sucesso!' % form_data['position'].title
+                    }
                 }
-            }
-            return render(request, 'jobs/position_apply.html', context)
+                return render(request, 'jobs/position_apply.html', context)
+            else:
+                return handle_duplicate()
