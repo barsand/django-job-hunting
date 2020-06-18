@@ -6,9 +6,11 @@
 
 {% block body %}
 <h1 class="my-2">{{position.title}}</h1>
-<span class="row">
-    <strong class="mr-1">Empresa:</strong><p>{{position.publisher.full_name}}</p>
-</span>
+  {% if profile.role == 'candidate' %}
+  <span class="row">
+      <strong class="mr-1">Empresa:</strong><p>{{position.publisher.full_name}}</p>
+  </span>
+  {% endif %}
 <span class="row">
     <strong class="mr-1">Escolaridade mínima:</strong>
     <p>{{position.get_min_education_display}}</p>
@@ -25,6 +27,10 @@
   <i class="fa fa-sign-in"></i>
   candidatar
 </a>
+
+{% elif profile.role == 'company' %}
+<h3>Candidatos</h3>
+
 {% endif %}
 
 {% endblock %}

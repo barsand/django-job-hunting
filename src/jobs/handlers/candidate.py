@@ -21,14 +21,6 @@ class CandidateHandler():
         }
         return render(request, 'jobs/candidate_dash.html', context)
 
-    def position_view(request, position_id):
-        if request.method == 'GET':
-            context = {
-                'profile': auth.AuthHandler.get_curr_profile(request),
-                'position': models.JobPosition.objects.get(id=position_id)
-            }
-            return render(request, 'jobs/position_view.html', context)
-
     def position_apply(request, position_id):
         def handle_duplicate():
             context = {

@@ -36,11 +36,7 @@ def position_create(request):
 
 def position_view(request, position_id):
     if handlers.AuthHandler.access_granted(request, ['company', 'candidate']):
-        role = handlers.AuthHandler.get_curr_profile(request).role
-        if role == 'company':
-            pass
-        elif role == 'candidate':
-            return handlers.CandidateHandler.position_view(request, position_id)
+        return handlers.PositionHandler.position_view(request, position_id)
 
     else:
         return render(request, 'jobs/403.html')

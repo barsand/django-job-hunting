@@ -5,12 +5,12 @@
 {% endblock %}
 
 {% block body %}
-  <h1 class="my-2">Candidatar-se à vaga "{{position.title}}"</h1>
   {% if message %}
   <div class="alert alert-{{message.type}}" role="alert">
     {{message.text}}
   </div>
   {% else %}
+    <h1 class="my-2">Candidatar-se à vaga "{{position.title}}"</h1>
     <form action="{{request.path}}" method="post">
       {% csrf_token %}
       <div class="form-group">

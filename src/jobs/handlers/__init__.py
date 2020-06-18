@@ -1,4 +1,5 @@
-from .company import CompanyHandler, PositionHandler
+from .company import CompanyHandler
+from .position import PositionHandler
 from .candidate import CandidateHandler
 from .auth import AuthHandler
 
