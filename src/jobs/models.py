@@ -38,3 +38,10 @@ class JobPosition(models.Model):
     requirements = models.CharField(max_length=1000)
     min_education = models.CharField(max_length=20, choices=EDUCATION_CHOICES)
     publisher = models.ForeignKey(Profile, on_delete=models.CASCADE)
+
+class Application(models.Model):
+    position = models.ForeignKey(JobPosition, on_delete=models.CASCADE)
+    candidate = models.ForeignKey(Profile, on_delete=models.CASCADE)
+    salary_claim = models.IntegerField()
+    professional_experience = models.CharField(max_length=1000)
+    education = models.CharField(max_length=20, choices=EDUCATION_CHOICES)

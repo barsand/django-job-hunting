@@ -4,8 +4,8 @@
   Vagas de emprego
 {% endblock %}
 
-
 {% block body %}
+<h1>Início</h1>
 
 {% if message %}
 <div class="alert alert-{{message.type}} alert-dismissible fade show" role="alert">
@@ -22,6 +22,7 @@
       <th>Nome da vaga</th>
       <th>Faixa salarial</th>
       <th>Escolaridade mínima</th>
+      <th>Visualizar vaga</th>
     </tr>
   </thead>
   <tbody>
@@ -30,6 +31,11 @@
         <td>{{ p.title }}</td>
         <td>{{ p.get_salary_display }}</td>
         <td>{{ p.get_min_education_display }} {{ i.unit }}</td>
+        <td class="d-flex justify-content-center">
+            <a href="{% url 'position_view' position_id=p.id %}">
+                <i class="fa fa-eye ml-1"></i>
+            </a>
+        </td>
       </tr>
     {% endfor %}
   </tbody>
