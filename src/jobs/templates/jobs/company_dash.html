@@ -28,14 +28,16 @@
       <th>Nome da vaga</th>
       <th>Faixa salarial</th>
       <th>Escolaridade mínima</th>
+      <th>Candidatos</th>
     </tr>
   </thead>
   <tbody>
-    {% for p in positions %}
+    {% for p, num_applications in position2applications_count %}
       <tr>
         <td>{{ p.title }}</td>
         <td>{{ p.get_salary_display }}</td>
         <td>{{ p.get_min_education_display }} {{ i.unit }}</td>
+        <td>{{ num_applications }}</td>
       </tr>
     {% endfor %}
   </tbody>

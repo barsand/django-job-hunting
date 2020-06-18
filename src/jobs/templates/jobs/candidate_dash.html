@@ -23,6 +23,7 @@
       <th>Faixa salarial</th>
       <th>Escolaridade mínima</th>
       <th>Visualizar vaga</th>
+      <th>Submissão de candidatura</th>
     </tr>
   </thead>
   <tbody>
@@ -35,6 +36,14 @@
             <a href="{% url 'position_view' position_id=p.id %}">
                 <i class="fa fa-eye ml-1"></i>
             </a>
+        </td>
+        <td>
+          {% if p.id in candidate_applications %}
+          <span class="d-flex justify-content-center">
+              <i class="fa fa-check text-success"></i>
+          </span>
+
+          {% endif %}
         </td>
       </tr>
     {% endfor %}

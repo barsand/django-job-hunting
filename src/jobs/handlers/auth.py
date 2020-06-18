@@ -48,7 +48,6 @@ class AuthHandler():
         except:
             return None
 
-
     def access_granted(request, allowed_roles):
         if isinstance(allowed_roles, str):
             allowed_roles = [allowed_roles]
