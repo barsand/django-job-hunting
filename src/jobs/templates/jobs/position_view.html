@@ -60,9 +60,11 @@
 </table>
 
 
-{% for a in applications %}
-{{a}}
-{% endfor %}
+<a class="btn btn-primary my-4"
+   href="{% url 'home'  %}"
+   role="button">
+Retornar às vagas
+  </a>
 
 {% endif %}
 
