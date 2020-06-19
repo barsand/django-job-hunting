@@ -18,7 +18,6 @@ def login(request):
 def logout(request):
     return handlers.AuthHandler.logout(request)
 
-
 def home(request):
     if handlers.AuthHandler.access_granted(request, ['company', 'candidate']):
         role = handlers.AuthHandler.get_curr_profile(request).role
@@ -26,6 +25,13 @@ def home(request):
             return handlers.CompanyHandler.dash(request)
         elif role == 'candidate':
             return handlers.CandidateHandler.dash(request)
+
+    else:
+        return render(request, 'jobs/403.html')
+
+def reports(request):
+    if handlers.AuthHandler.access_granted(request, 'company'):
+        return handlers.ReportHandler.report_view(request)
 
     else:
         return render(request, 'jobs/403.html')
