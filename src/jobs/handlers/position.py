@@ -1,4 +1,5 @@
 from django.shortcuts import render
+from django.db.models import Q
 from . import auth
 from .. import models, utils
 import collections
@@ -18,6 +19,34 @@ def get_position(request, position_id):
                                               publisher=curr_profile)
     except Exception as exp:
         return None
+
+def calculate_score(application_form):
+    score = 0
+
+    claim_range = 0
+    salary_claim = int(application_form['salary_claim'])
+    if  salary_claim > 1000:
+        claim_range += 1
+    if  salary_claim > 2000:
+        claim_range += 1
+    if  salary_claim > 3000:
+        claim_range += 1
+
+    salary_levels = [i[0] for i in models.SALARY_CHOICES]
+    position_salary_range = salary_levels.index(application_form['position'].salary)
+
+    if salary_levels[claim_range] == application_form['position'].salary:
+        print('score for salary')
+        score += 1
+
+    education_levels = [i[0] for i in models.EDUCATION_CHOICES]
+    application_education_level = education_levels.index(application_form['education'])
+    min_education_level = education_levels.index(application_form['position'].min_education)
+    if application_education_level >= min_education_level:
+        print('score for education')
+        score += 1
+
+    return score
 
 
 class PositionHandler():
@@ -43,6 +72,50 @@ class PositionHandler():
             }
             return render(request, 'jobs/position_create.html', context)
 
+
+    def position_apply(request, position_id):
+        def handle_duplicate():
+            context = {
+                'message': {
+                    'type': 'warning',
+                    'text': 'Você já se candidatou a esta vaga!'
+                }
+            }
+            return render(request, 'jobs/position_apply.html', context)
+        curr_profile = auth.AuthHandler.get_curr_profile(request)
+        curr_position = models.JobPosition.objects.get(id=position_id)
+        res = models.Application.objects.filter(
+                Q(position=curr_position) & Q(candidate=curr_profile))
+        if len(res):
+            return handle_duplicate()
+
+        if request.method == 'GET':
+            context = {
+                'profile': auth.AuthHandler.get_curr_profile(request),
+                'position': models.JobPosition.objects.get(id=position_id),
+                'choices': [
+                    ('education', 'Última escolaridade', models.EDUCATION_CHOICES),
+                ]
+            }
+            return render(request, 'jobs/position_apply.html', context)
+
+        elif request.method == 'POST':
+            if not len(res):
+                form_data = utils.parse_model_form_data(request, models.Application)
+                form_data['candidate'] = curr_profile
+                form_data['position'] = curr_position
+                form_data['score'] = calculate_score(form_data)
+                application = models.Application(**form_data)
+                application.save()
+                context = {
+                    'message': {
+                        'type': 'success',
+                        'text': 'Candidatura à vaga "%s" submetida com sucesso!' % form_data['position'].title
+                    }
+                }
+                return render(request, 'jobs/position_apply.html', context)
+            else:
+                return handle_duplicate()
 
     def position_view(request, position_id):
         if request.method == 'GET':

@@ -53,7 +53,7 @@ def position_view(request, position_id):
 
 def position_apply(request, position_id):
     if handlers.AuthHandler.access_granted(request, 'candidate'):
-        return handlers.CandidateHandler.position_apply(request, position_id)
+        return handlers.PositionHandler.position_apply(request, position_id)
 
     else:
         return render(request, 'jobs/403.html')

@@ -34,6 +34,7 @@
   <thead>
     <tr>
       <th>Nome do candidato</th>
+      <th>Pontuação</th>
       <th>Pretensão salarial</th>
       <th>Escolaridade</th>
       <th>Experiência profissional</th>
@@ -44,6 +45,7 @@
     {% for a in applications %}
       <tr>
           <td>{{a.candidate.full_name}}</td>
+          <td>{{a.score}}</td>
           <td>{{a.salary_claim}}</td>
           <td>{{a.get_education_display}}</td>
           <td>{{a.professional_experience}}</td>

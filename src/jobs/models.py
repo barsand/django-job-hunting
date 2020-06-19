@@ -47,3 +47,5 @@ class Application(models.Model):
     professional_experience = models.CharField(max_length=1000)
     education = models.CharField(max_length=20, choices=EDUCATION_CHOICES)
     created = models.DateTimeField(auto_now_add=True)
+    score = models.IntegerField()
+
