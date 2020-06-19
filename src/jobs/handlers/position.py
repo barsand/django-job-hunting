@@ -36,14 +36,12 @@ def calculate_score(application_form):
     position_salary_range = salary_levels.index(application_form['position'].salary)
 
     if salary_levels[claim_range] == application_form['position'].salary:
-        print('score for salary')
         score += 1
 
     education_levels = [i[0] for i in models.EDUCATION_CHOICES]
     application_education_level = education_levels.index(application_form['education'])
     min_education_level = education_levels.index(application_form['position'].min_education)
     if application_education_level >= min_education_level:
-        print('score for education')
         score += 1
 
     return score
@@ -157,6 +155,12 @@ class PositionHandler():
                     'type': 'success',
                     'text': 'Vaga "%s" alterada com sucesso!' % curr_position.title
                 }
+
+            for application in get_position_applications(curr_position):
+                application_form = application.__dict__
+                application_form['position'] = get_position(request, position_id)
+                application.score = calculate_score(application_form)
+                application.save()
 
             return render(request, 'jobs/position_edit.html', context)
 
